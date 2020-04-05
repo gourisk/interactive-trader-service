@@ -52,7 +52,7 @@ public class TraderPosition {
     }
 
     @Basic
-    @Column(name = "MARKET_VALUE")
+    @Column(name = "MarketValue")
     public BigDecimal getMarketValue() {
         return marketValue;
     }
@@ -63,7 +63,7 @@ public class TraderPosition {
     }
 
     @Basic
-    @Column(name = "OPEN_MARKET_VALUE")
+    @Column(name = "OpenMarketValue")
     public BigDecimal getOpenMarketValue() {
         return openMarketValue;
     }
@@ -74,7 +74,7 @@ public class TraderPosition {
     }
 
     @Basic
-    @Column(name = "CASH_BALANCE")
+    @Column(name = "CashBalance")
     public BigDecimal getCashBalance() {
         return cashBalance;
     }
@@ -85,7 +85,7 @@ public class TraderPosition {
     }
 
     @Basic
-    @Column(name = "OPEN_CASH_BALANCE")
+    @Column(name = "OpenCashBalance")
     public BigDecimal getOpenCashBalance() {
         return openCashBalance;
     }
@@ -96,7 +96,7 @@ public class TraderPosition {
     }
 
     @Basic
-    @Column(name = "TOTAL_PL")
+    @Column(name = "TotalPl")
     public BigDecimal getTotalPl() {
         return totalPl;
     }

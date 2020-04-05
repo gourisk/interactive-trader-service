@@ -17,7 +17,7 @@ public class InstrumentPrice {
     private String curveName;
 
     @Id
-    @Column(name = "PRICE_KEY")
+    @Column(name = "PriceKey")
     public Integer getPriceKey() {
         return priceKey;
     }
@@ -28,7 +28,7 @@ public class InstrumentPrice {
     }
 
     @Basic
-    @Column(name = "REPORT_DATE")
+    @Column(name = "ReportDate")
     public Date getReportDate() {
         return reportDate;
     }
@@ -39,7 +39,7 @@ public class InstrumentPrice {
     }
 
     @Basic
-    @Column(name = "BID_PRICE")
+    @Column(name = "BidPrice")
     public BigDecimal getBidPrice() {
         return bidPrice;
     }
@@ -50,7 +50,7 @@ public class InstrumentPrice {
     }
 
     @Basic
-    @Column(name = "ASK_PRICE")
+    @Column(name = "AskPrice")
     public BigDecimal getAskPrice() {
         return askPrice;
     }
@@ -61,7 +61,7 @@ public class InstrumentPrice {
     }
 
     @Basic
-    @Column(name = "MID_PRICE")
+    @Column(name = "MidPrice")
     public BigDecimal getMidPrice() {
         return midPrice;
     }
@@ -72,7 +72,7 @@ public class InstrumentPrice {
     }
 
     @Basic
-    @Column(name = "CURVE_NAME")
+    @Column(name = "CurveName")
     public String getCurveName() {
         return curveName;
     }

@@ -19,7 +19,7 @@ public class OrderMaster {
     private Account accountByTraderId;
 
     @Id
-    @Column(name = "ORDER_ID")
+    @Column(name = "OrderId")
     public Integer getOrderId() {
         return orderId;
     }
@@ -30,7 +30,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "ORDER_DESC")
+    @Column(name = "OrderDesc")
     public String getOrderDesc() {
         return orderDesc;
     }
@@ -41,7 +41,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "TRADE_DATE")
+    @Column(name = "TradeDate")
     public Timestamp getTradeDate() {
         return tradeDate;
     }
@@ -52,7 +52,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "BUY_SELL_FLAG")
+    @Column(name = "BuySellFlag")
     public String getBuySellFlag() {
         return buySellFlag;
     }
@@ -63,7 +63,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "QUANTITY")
+    @Column(name = "Quantity")
     public Integer getQuantity() {
         return quantity;
     }
@@ -74,7 +74,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "PRICE")
+    @Column(name = "Price")
     public BigDecimal getPrice() {
         return price;
     }
@@ -85,7 +85,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "MARKET_VALUE")
+    @Column(name = "MarketValue")
     public BigDecimal getMarketValue() {
         return marketValue;
     }
@@ -96,7 +96,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "TRADE_SOURCE")
+    @Column(name = "TradeSource")
     public String getTradeSource() {
         return tradeSource;
     }

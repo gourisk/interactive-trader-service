@@ -1,0 +1,10 @@
+insert into INSTRUMENT_MASTER  values('AAPL','Apple Inc','NASDAQ-GS','Technology','USD');
+insert into INSTRUMENT_MASTER  values('SBUX','Starbucks Corporation','NASDAQ-GS','Consumer Services','USD');
+insert into INSTRUMENT_MASTER  values('MSFT','Microsoft Corporation','NASDAQ-GS','Technology','USD');
+insert into INSTRUMENT_MASTER  values('CSCO','Cisco Systems, Inc','NASDAQ-GS','Technology','USD');
+insert into INSTRUMENT_MASTER  values('QCOM','QUALCOMM Incorporated','NASDAQ-GS','Technology','USD');
+insert into INSTRUMENT_MASTER  values('FB','Facebook, Inc','NASDAQ-GS','Technology','USD');
+insert into INSTRUMENT_MASTER  values('AMZN','Amazon.com, Inc','NASDAQ-GS','Consumer Services','USD');
+insert into INSTRUMENT_MASTER  values('TSLA','Tesla, Inc','NASDAQ-GS','Capital Goods','USD');
+insert into INSTRUMENT_MASTER  values('AMD','Advanced Micro Devices, Inc','NASDAQ-GS','Technology','USD');
+insert into INSTRUMENT_MASTER  values('ZNGA','Zynga Inc, Inc','NASDAQ-GS','Technology','USD');

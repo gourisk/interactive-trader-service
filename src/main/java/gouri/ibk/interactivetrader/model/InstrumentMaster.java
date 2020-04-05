@@ -14,7 +14,7 @@ public class InstrumentMaster {
     private String currencyCode;
 
     @Id
-    @Column(name = "TICKER")
+    @Column(name = "Ticker")
     public String getTicker() {
         return ticker;
     }
@@ -25,7 +25,7 @@ public class InstrumentMaster {
     }
 
     @Basic
-    @Column(name = "ISSUER")
+    @Column(name = "Issuer")
     public String getIssuer() {
         return issuer;
     }
@@ -36,7 +36,7 @@ public class InstrumentMaster {
     }
 
     @Basic
-    @Column(name = "EXCHANGE_CODE")
+    @Column(name = "ExchangeCode")
     public String getExchangeCode() {
         return exchangeCode;
     }
@@ -47,7 +47,7 @@ public class InstrumentMaster {
     }
 
     @Basic
-    @Column(name = "MARKET_SECTOR")
+    @Column(name = "MarketSector")
     public String getMarketSector() {
         return marketSector;
     }
@@ -58,7 +58,7 @@ public class InstrumentMaster {
     }
 
     @Basic
-    @Column(name = "CURRENCY_CODE")
+    @Column(name = "CurrencyCode")
     public String getCurrencyCode() {
         return currencyCode;
     }

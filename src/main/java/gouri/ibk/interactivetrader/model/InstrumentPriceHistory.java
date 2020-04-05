@@ -15,7 +15,7 @@ public class InstrumentPriceHistory {
     private InstrumentMaster instrumentMasterByTicker;
 
     @Basic
-    @Column(name = "REPORT_DATE")
+    @Column(name = "ReportDate")
     public Date getReportDate() {
         return reportDate;
     }
@@ -26,7 +26,7 @@ public class InstrumentPriceHistory {
     }
 
     @Basic
-    @Column(name = "BID_PRICE")
+    @Column(name = "BidPrice")
     public BigDecimal getBidPrice() {
         return bidPrice;
     }
@@ -37,7 +37,7 @@ public class InstrumentPriceHistory {
     }
 
     @Basic
-    @Column(name = "ASK_PRICE")
+    @Column(name = "AskPrice")
     public BigDecimal getAskPrice() {
         return askPrice;
     }
@@ -48,7 +48,7 @@ public class InstrumentPriceHistory {
     }
 
     @Basic
-    @Column(name = "MID_PRICE")
+    @Column(name = "MidPrice")
     public BigDecimal getMidPrice() {
         return midPrice;
     }
@@ -59,7 +59,7 @@ public class InstrumentPriceHistory {
     }
 
     @Basic
-    @Column(name = "LAST_UPDATED")
+    @Column(name = "LastUpdated")
     public Timestamp getLastUpdated() {
         return lastUpdated;
     }
