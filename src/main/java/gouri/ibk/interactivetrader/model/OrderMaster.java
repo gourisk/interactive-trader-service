@@ -153,7 +153,7 @@ public class OrderMaster {
     }
 
     @ManyToOne
-    @JoinColumn(name = "TICKER", referencedColumnName = "Ticker", nullable = false)
+    @JoinColumn(name = "Ticker", referencedColumnName = "Ticker", nullable = false)
     public InstrumentMaster getInstrumentMasterByTicker() {
         return instrumentMasterByTicker;
     }
@@ -164,7 +164,7 @@ public class OrderMaster {
     }
 
     @ManyToOne
-    @JoinColumn(name = "TRADER_ID", referencedColumnName = "AccountId", nullable = false)
+    @JoinColumn(name = "TraderId", referencedColumnName = "AccountId", nullable = false)
     public Account getAccountByTraderId() {
         return accountByTraderId;
     }
