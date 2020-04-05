@@ -8,18 +8,21 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class InteractiveTraderServiceApplication {
 
-	static ConfigurableApplicationContext CONTEXT;
+    static ConfigurableApplicationContext CONTEXT;
 
-	public static ConfigurableApplicationContext getContext() {
-		return CONTEXT;
-	}
+    public static ConfigurableApplicationContext getContext() {
+        return CONTEXT;
+    }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         CONTEXT = SpringApplication.run(
-        	new Class<?>[]{InteractiveTraderAppConfig.class, InteractiveTraderServiceApplication.class}, args);
+            new Class<?>[] {InteractiveTraderAppConfig.class,
+                InteractiveTraderMessageBrokerConfig.class,
+                InteractiveTraderServiceApplication.class}, args
+        );
 
-		DataInitializer di = getContext().getBean(DataInitializer.class);
-		di.initData();
+        DataInitializer di = getContext().getBean(DataInitializer.class);
+        di.initData();
 
     }
 

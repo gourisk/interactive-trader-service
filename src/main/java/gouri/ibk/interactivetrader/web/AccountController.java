@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 @RestController
-@CrossOrigin({"http://localhost:3000"})
+@CrossOrigin({"http://localhost:3000", "http://localhost:5000"})
 public class AccountController {
 
     private Logger logger = LoggerFactory.getLogger(AccountController.class);
@@ -33,6 +36,15 @@ public class AccountController {
     public List<Account> findByLastName(@NotNull @PathVariable("name") String name) {
         logger.info("/account/lname/ controller called with {}", name);
         return repo.findByLastName(name);
+    }
+
+    @GetMapping("/acctsummary")
+    public Map<String, ? extends Object> getSummary() {
+        Map<String, Integer> map = new HashMap<>();
+        logger.info("getSummary controller called.");
+        int number = new Random().nextInt(1000);
+        map.put("result", number);
+        return map;
     }
 
 }

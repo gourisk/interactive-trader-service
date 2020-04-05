@@ -19,7 +19,7 @@ public class Account {
     private Boolean isActive;
 
     @Id
-    @Column(name = "AccountId")
+    @Column(name = "ACCOUNTID")
     public Integer getAccountId() {
         return accountId;
     }
@@ -30,7 +30,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "FirstName")
+    @Column(name = "FIRSTNAME")
     public String getFirstName() {
         return firstName;
     }
@@ -41,7 +41,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "LastName")
+    @Column(name = "LASTNAME")
     public String getLastName() {
         return lastName;
     }
@@ -52,7 +52,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "Email")
+    @Column(name = "EMAIL")
     public String getEmail() {
         return email;
     }
@@ -63,7 +63,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "AccountType")
+    @Column(name = "ACCOUNTTYPE")
     public String getAccountType() {
         return accountType;
     }
@@ -74,7 +74,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "CreateDate")
+    @Column(name = "CREATEDATE")
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -85,7 +85,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "ModifiedDate")
+    @Column(name = "MODIFIEDDATE")
     public Timestamp getModifiedDate() {
         return modifiedDate;
     }
@@ -96,7 +96,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "IsActive")
+    @Column(name = "ISACTIVE")
     public Boolean getActive() {
         return isActive;
     }

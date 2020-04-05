@@ -5,50 +5,38 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
-public class TradeOrder {
-
-    private Integer tradeId;
-    private String tradeDesc;
-    private String bookName;
+public class OrderMaster {
+    private Integer orderId;
+    private String orderDesc;
     private Timestamp tradeDate;
     private String buySellFlag;
     private Integer quantity;
     private BigDecimal price;
     private BigDecimal marketValue;
     private String tradeSourceId;
-    private Instrument instrumentMasterByTicker;
+    private Timestamp executedTime;
+    private InstrumentMaster instrumentMasterByTicker;
     private Account accountByTraderId;
 
     @Id
-    @Column(name = "Tradeid")
-    public Integer getTradeId() {
-        return tradeId;
+    @Column(name = "OrderId")
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public TradeOrder setTradeId(Integer tradeid) {
-        this.tradeId = tradeid;
+    public OrderMaster setOrderId(Integer orderId) {
+        this.orderId = orderId;
         return this;
     }
 
     @Basic
-    @Column(name = "TradeDesc")
-    public String getTradeDesc() {
-        return tradeDesc;
+    @Column(name = "OrderDesc")
+    public String getOrderDesc() {
+        return orderDesc;
     }
 
-    public TradeOrder setTradeDesc(String tradeDesc) {
-        this.tradeDesc = tradeDesc;
-        return this;
-    }
-
-    @Basic
-    @Column(name = "BookName")
-    public String getBookName() {
-        return bookName;
-    }
-
-    public TradeOrder setBookName(String bookName) {
-        this.bookName = bookName;
+    public OrderMaster setOrderDesc(String orderDesc) {
+        this.orderDesc = orderDesc;
         return this;
     }
 
@@ -58,7 +46,7 @@ public class TradeOrder {
         return tradeDate;
     }
 
-    public TradeOrder setTradeDate(Timestamp tradeDate) {
+    public OrderMaster setTradeDate(Timestamp tradeDate) {
         this.tradeDate = tradeDate;
         return this;
     }
@@ -69,7 +57,7 @@ public class TradeOrder {
         return buySellFlag;
     }
 
-    public TradeOrder setBuySellFlag(String buySellFlag) {
+    public OrderMaster setBuySellFlag(String buySellFlag) {
         this.buySellFlag = buySellFlag;
         return this;
     }
@@ -80,7 +68,7 @@ public class TradeOrder {
         return quantity;
     }
 
-    public TradeOrder setQuantity(Integer quantity) {
+    public OrderMaster setQuantity(Integer quantity) {
         this.quantity = quantity;
         return this;
     }
@@ -91,7 +79,7 @@ public class TradeOrder {
         return price;
     }
 
-    public TradeOrder setPrice(BigDecimal price) {
+    public OrderMaster setPrice(BigDecimal price) {
         this.price = price;
         return this;
     }
@@ -102,7 +90,7 @@ public class TradeOrder {
         return marketValue;
     }
 
-    public TradeOrder setMarketValue(BigDecimal marketValue) {
+    public OrderMaster setMarketValue(BigDecimal marketValue) {
         this.marketValue = marketValue;
         return this;
     }
@@ -113,8 +101,19 @@ public class TradeOrder {
         return tradeSourceId;
     }
 
-    public TradeOrder setTradeSourceId(String tradeSourceId) {
+    public OrderMaster setTradeSourceId(String tradeSourceId) {
         this.tradeSourceId = tradeSourceId;
+        return this;
+    }
+
+    @Basic
+    @Column(name = "ExecutedTime")
+    public Timestamp getExecutedTime() {
+        return executedTime;
+    }
+
+    public OrderMaster setExecutedTime(Timestamp executedTime) {
+        this.executedTime = executedTime;
         return this;
     }
 
@@ -123,11 +122,10 @@ public class TradeOrder {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TradeOrder that = (TradeOrder) o;
+        OrderMaster that = (OrderMaster) o;
 
-        if (tradeId != null ? !tradeId.equals(that.tradeId) : that.tradeId != null) return false;
-        if (tradeDesc != null ? !tradeDesc.equals(that.tradeDesc) : that.tradeDesc != null) return false;
-        if (bookName != null ? !bookName.equals(that.bookName) : that.bookName != null) return false;
+        if (orderId != null ? !orderId.equals(that.orderId) : that.orderId != null) return false;
+        if (orderDesc != null ? !orderDesc.equals(that.orderDesc) : that.orderDesc != null) return false;
         if (tradeDate != null ? !tradeDate.equals(that.tradeDate) : that.tradeDate != null) return false;
         if (buySellFlag != null ? !buySellFlag.equals(that.buySellFlag) : that.buySellFlag != null) return false;
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) return false;
@@ -135,31 +133,32 @@ public class TradeOrder {
         if (marketValue != null ? !marketValue.equals(that.marketValue) : that.marketValue != null) return false;
         if (tradeSourceId != null ? !tradeSourceId.equals(that.tradeSourceId) : that.tradeSourceId != null)
             return false;
+        if (executedTime != null ? !executedTime.equals(that.executedTime) : that.executedTime != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = tradeId != null ? tradeId.hashCode() : 0;
-        result = 31 * result + (tradeDesc != null ? tradeDesc.hashCode() : 0);
-        result = 31 * result + (bookName != null ? bookName.hashCode() : 0);
+        int result = orderId != null ? orderId.hashCode() : 0;
+        result = 31 * result + (orderDesc != null ? orderDesc.hashCode() : 0);
         result = 31 * result + (tradeDate != null ? tradeDate.hashCode() : 0);
         result = 31 * result + (buySellFlag != null ? buySellFlag.hashCode() : 0);
         result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (marketValue != null ? marketValue.hashCode() : 0);
         result = 31 * result + (tradeSourceId != null ? tradeSourceId.hashCode() : 0);
+        result = 31 * result + (executedTime != null ? executedTime.hashCode() : 0);
         return result;
     }
 
     @ManyToOne
     @JoinColumn(name = "Ticker", referencedColumnName = "Ticker", nullable = false)
-    public Instrument getInstrumentMasterByTicker() {
+    public InstrumentMaster getInstrumentMasterByTicker() {
         return instrumentMasterByTicker;
     }
 
-    public TradeOrder setInstrumentMasterByTicker(Instrument instrumentMasterByTicker) {
+    public OrderMaster setInstrumentMasterByTicker(InstrumentMaster instrumentMasterByTicker) {
         this.instrumentMasterByTicker = instrumentMasterByTicker;
         return this;
     }
@@ -170,9 +169,8 @@ public class TradeOrder {
         return accountByTraderId;
     }
 
-    public TradeOrder setAccountByTraderId(Account accountByTraderId) {
+    public OrderMaster setAccountByTraderId(Account accountByTraderId) {
         this.accountByTraderId = accountByTraderId;
         return this;
     }
-
 }

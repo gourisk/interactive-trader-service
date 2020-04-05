@@ -6,53 +6,53 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Instrument {
+public class InstrumentMaster {
     private String ticker;
     private String issuer;
-    private String parentIssuer;
+    private String exchangeCode;
     private String marketSector;
     private String currencyCode;
 
     @Id
-    @Column(name = "Ticker")
+    @Column(name = "TICKER")
     public String getTicker() {
         return ticker;
     }
 
-    public Instrument setTicker(String ticker) {
+    public InstrumentMaster setTicker(String ticker) {
         this.ticker = ticker;
         return this;
     }
 
     @Basic
-    @Column(name = "Issuer")
+    @Column(name = "ISSUER")
     public String getIssuer() {
         return issuer;
     }
 
-    public Instrument setIssuer(String issuer) {
+    public InstrumentMaster setIssuer(String issuer) {
         this.issuer = issuer;
         return this;
     }
 
     @Basic
-    @Column(name = "ParentIssuer")
-    public String getParentIssuer() {
-        return parentIssuer;
+    @Column(name = "EXCHANGECODE")
+    public String getExchangeCode() {
+        return exchangeCode;
     }
 
-    public Instrument setParentIssuer(String parentIssuer) {
-        this.parentIssuer = parentIssuer;
+    public InstrumentMaster setExchangeCode(String exchangeCode) {
+        this.exchangeCode = exchangeCode;
         return this;
     }
 
     @Basic
-    @Column(name = "MarketSector")
+    @Column(name = "MARKETSECTOR")
     public String getMarketSector() {
         return marketSector;
     }
 
-    public Instrument setMarketSector(String marketSector) {
+    public InstrumentMaster setMarketSector(String marketSector) {
         this.marketSector = marketSector;
         return this;
     }
@@ -63,7 +63,7 @@ public class Instrument {
         return currencyCode;
     }
 
-    public Instrument setCurrencyCode(String currencyCode) {
+    public InstrumentMaster setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
         return this;
     }
@@ -73,11 +73,11 @@ public class Instrument {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Instrument that = (Instrument) o;
+        InstrumentMaster that = (InstrumentMaster) o;
 
         if (ticker != null ? !ticker.equals(that.ticker) : that.ticker != null) return false;
         if (issuer != null ? !issuer.equals(that.issuer) : that.issuer != null) return false;
-        if (parentIssuer != null ? !parentIssuer.equals(that.parentIssuer) : that.parentIssuer != null) return false;
+        if (exchangeCode != null ? !exchangeCode.equals(that.exchangeCode) : that.exchangeCode != null) return false;
         if (marketSector != null ? !marketSector.equals(that.marketSector) : that.marketSector != null) return false;
         if (currencyCode != null ? !currencyCode.equals(that.currencyCode) : that.currencyCode != null) return false;
 
@@ -88,7 +88,7 @@ public class Instrument {
     public int hashCode() {
         int result = ticker != null ? ticker.hashCode() : 0;
         result = 31 * result + (issuer != null ? issuer.hashCode() : 0);
-        result = 31 * result + (parentIssuer != null ? parentIssuer.hashCode() : 0);
+        result = 31 * result + (exchangeCode != null ? exchangeCode.hashCode() : 0);
         result = 31 * result + (marketSector != null ? marketSector.hashCode() : 0);
         result = 31 * result + (currencyCode != null ? currencyCode.hashCode() : 0);
         return result;
