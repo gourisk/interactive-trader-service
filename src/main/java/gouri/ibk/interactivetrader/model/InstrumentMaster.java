@@ -36,7 +36,7 @@ public class InstrumentMaster {
     }
 
     @Basic
-    @Column(name = "EXCHANGECODE")
+    @Column(name = "EXCHANGE_CODE")
     public String getExchangeCode() {
         return exchangeCode;
     }
@@ -47,7 +47,7 @@ public class InstrumentMaster {
     }
 
     @Basic
-    @Column(name = "MARKETSECTOR")
+    @Column(name = "MARKET_SECTOR")
     public String getMarketSector() {
         return marketSector;
     }
@@ -58,7 +58,7 @@ public class InstrumentMaster {
     }
 
     @Basic
-    @Column(name = "CurrencyCode")
+    @Column(name = "CURRENCY_CODE")
     public String getCurrencyCode() {
         return currencyCode;
     }

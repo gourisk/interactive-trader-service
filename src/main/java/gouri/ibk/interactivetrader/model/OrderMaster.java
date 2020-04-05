@@ -13,13 +13,13 @@ public class OrderMaster {
     private Integer quantity;
     private BigDecimal price;
     private BigDecimal marketValue;
-    private String tradeSourceId;
+    private String tradeSource;
     private Timestamp executedTime;
     private InstrumentMaster instrumentMasterByTicker;
     private Account accountByTraderId;
 
     @Id
-    @Column(name = "OrderId")
+    @Column(name = "ORDER_ID")
     public Integer getOrderId() {
         return orderId;
     }
@@ -30,7 +30,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "OrderDesc")
+    @Column(name = "ORDER_DESC")
     public String getOrderDesc() {
         return orderDesc;
     }
@@ -41,7 +41,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "TradeDate")
+    @Column(name = "TRADE_DATE")
     public Timestamp getTradeDate() {
         return tradeDate;
     }
@@ -52,7 +52,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "BuySellFlag")
+    @Column(name = "BUY_SELL_FLAG")
     public String getBuySellFlag() {
         return buySellFlag;
     }
@@ -63,7 +63,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "Quantity")
+    @Column(name = "QUANTITY")
     public Integer getQuantity() {
         return quantity;
     }
@@ -74,7 +74,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "Price")
+    @Column(name = "PRICE")
     public BigDecimal getPrice() {
         return price;
     }
@@ -85,7 +85,7 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "MarketValue")
+    @Column(name = "MARKET_VALUE")
     public BigDecimal getMarketValue() {
         return marketValue;
     }
@@ -96,13 +96,13 @@ public class OrderMaster {
     }
 
     @Basic
-    @Column(name = "TradeSourceId")
-    public String getTradeSourceId() {
-        return tradeSourceId;
+    @Column(name = "TRADE_SOURCE")
+    public String getTradeSource() {
+        return tradeSource;
     }
 
-    public OrderMaster setTradeSourceId(String tradeSourceId) {
-        this.tradeSourceId = tradeSourceId;
+    public OrderMaster setTradeSource(String tradeSource) {
+        this.tradeSource = tradeSource;
         return this;
     }
 
@@ -131,7 +131,7 @@ public class OrderMaster {
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
         if (marketValue != null ? !marketValue.equals(that.marketValue) : that.marketValue != null) return false;
-        if (tradeSourceId != null ? !tradeSourceId.equals(that.tradeSourceId) : that.tradeSourceId != null)
+        if (tradeSource != null ? !tradeSource.equals(that.tradeSource) : that.tradeSource != null)
             return false;
         if (executedTime != null ? !executedTime.equals(that.executedTime) : that.executedTime != null) return false;
 
@@ -147,13 +147,13 @@ public class OrderMaster {
         result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (marketValue != null ? marketValue.hashCode() : 0);
-        result = 31 * result + (tradeSourceId != null ? tradeSourceId.hashCode() : 0);
+        result = 31 * result + (tradeSource != null ? tradeSource.hashCode() : 0);
         result = 31 * result + (executedTime != null ? executedTime.hashCode() : 0);
         return result;
     }
 
     @ManyToOne
-    @JoinColumn(name = "Ticker", referencedColumnName = "Ticker", nullable = false)
+    @JoinColumn(name = "TICKER", referencedColumnName = "Ticker", nullable = false)
     public InstrumentMaster getInstrumentMasterByTicker() {
         return instrumentMasterByTicker;
     }
@@ -164,7 +164,7 @@ public class OrderMaster {
     }
 
     @ManyToOne
-    @JoinColumn(name = "TraderId", referencedColumnName = "AccountId", nullable = false)
+    @JoinColumn(name = "TRADER_ID", referencedColumnName = "AccountId", nullable = false)
     public Account getAccountByTraderId() {
         return accountByTraderId;
     }

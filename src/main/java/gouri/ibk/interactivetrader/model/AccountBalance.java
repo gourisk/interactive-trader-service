@@ -10,7 +10,7 @@ public class AccountBalance {
     private Integer accountId;
 
     @Basic
-    @Column(name = "CURRENCYCODE")
+    @Column(name = "CurrencyCode")
     public String getCurrencyCode() {
         return currencyCode;
     }
@@ -21,7 +21,7 @@ public class AccountBalance {
     }
 
     @Basic
-    @Column(name = "CASHBALANCE")
+    @Column(name = "CashBalance")
     public BigDecimal getCashBalance() {
         return cashBalance;
     }
@@ -31,7 +31,7 @@ public class AccountBalance {
         return this;
     }
 
-    @Column(name = "ACCOUNTID")
+    @Column(name = "AccountId")
     public Integer getAccountId() {
         return accountId;
     }

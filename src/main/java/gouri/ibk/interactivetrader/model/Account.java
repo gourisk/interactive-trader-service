@@ -1,9 +1,6 @@
 package gouri.ibk.interactivetrader.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -19,7 +16,7 @@ public class Account {
     private Boolean isActive;
 
     @Id
-    @Column(name = "ACCOUNTID")
+    @Column(name = "AccountId")
     public Integer getAccountId() {
         return accountId;
     }
@@ -30,7 +27,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "FIRSTNAME")
+    @Column(name = "FirstName")
     public String getFirstName() {
         return firstName;
     }
@@ -41,7 +38,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "LASTNAME")
+    @Column(name = "LastName")
     public String getLastName() {
         return lastName;
     }
@@ -52,7 +49,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "EMAIL")
+    @Column(name = "Email")
     public String getEmail() {
         return email;
     }
@@ -63,7 +60,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "ACCOUNTTYPE")
+    @Column(name = "AccountType")
     public String getAccountType() {
         return accountType;
     }
@@ -74,7 +71,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "CREATEDATE")
+    @Column(name = "CreateDate")
     public Timestamp getCreateDate() {
         return createDate;
     }
@@ -85,7 +82,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "MODIFIEDDATE")
+    @Column(name = "ModifiedDate")
     public Timestamp getModifiedDate() {
         return modifiedDate;
     }
@@ -96,7 +93,7 @@ public class Account {
     }
 
     @Basic
-    @Column(name = "ISACTIVE")
+    @Column(name = "IsActive")
     public Boolean getActive() {
         return isActive;
     }

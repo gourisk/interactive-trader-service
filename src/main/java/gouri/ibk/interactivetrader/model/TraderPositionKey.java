@@ -1,8 +1,5 @@
 package gouri.ibk.interactivetrader.model;
 
-import javassist.SerialVersionUID;
-
-import javax.naming.Name;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -13,11 +10,11 @@ public class TraderPositionKey implements Serializable {
 
     private static final long SerialVersionUID = 1L;
 
-    @Column(name = "ReportDate")
+    @Column(name = "REPORT_DATE")
     private Date reportDate;
-    @Column(name="AccountId")
+    @Column(name="ACCOUNT_ID")
     private Integer accountId;
-    @Column(name = "ticker")
+    @Column(name = "TICKER")
     private String ticker;
 
     public TraderPositionKey(){}
