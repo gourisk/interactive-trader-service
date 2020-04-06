@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin({"http://localhost:3000", "http://localhost:5000"})
@@ -46,6 +43,14 @@ public class OrderController {
             returnOrders.add(orderMap);
         }
         return returnOrders;
+    }
+
+    @GetMapping("/orders/count/{id}")
+    public Map<String, Integer> getOrderCount(@NotNull @PathVariable("id") int accountId) {
+        logger.info("find today's trade count for: {}", accountId);
+        Map<String, Integer> model = new HashMap<>();
+        model.put("result", orderRepo.countByTradeDateAndAccountByTraderId_AccountId(new Date(), accountId));
+        return model;
     }
 
 }

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
-public interface InstrumentRepo extends JpaRepository<InstrumentPriceHistory, Integer> {
+public interface InstrumentRepo extends JpaRepository<InstrumentPrice, Integer> {
 
 }
