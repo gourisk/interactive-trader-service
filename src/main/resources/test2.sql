@@ -1,3 +1,6 @@
+INSERT INTO ACCOUNT(FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE, CREATE_DATE, MODIFIED_DATE, IS_ACTIVE) VALUES ('John', 'Doe', 'jd@gmail.com', 'TRADER', PARSEDATETIME('1/1/2019', 'MM/d/yyyy'), SYSDATE(), 1);
+INSERT INTO ACCOUNT(FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE, CREATE_DATE, MODIFIED_DATE, IS_ACTIVE) VALUES ('Odd', 'Bods', 'oddbods@gmail.com', 'TRADER', PARSEDATETIME('1/1/2019', 'MM/d/yyyy'), SYSDATE(), 1);
+
 insert into INSTRUMENT_MASTER  values('AAPL','Apple Inc','NASDAQ-GS','Technology','USD');
 insert into INSTRUMENT_MASTER  values('SBUX','Starbucks Corporation','NASDAQ-GS','Consumer Services','USD');
 insert into INSTRUMENT_MASTER  values('MSFT','Microsoft Corporation','NASDAQ-GS','Technology','USD');

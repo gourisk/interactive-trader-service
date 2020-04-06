@@ -21,8 +21,8 @@ public class InteractiveTraderServiceApplication {
                 InteractiveTraderServiceApplication.class}, args
         );
 
-        DataInitializer di = getContext().getBean(DataInitializer.class);
-        di.initData();
+//        DataInitializer di = getContext().getBean(DataInitializer.class);
+//        di.initData();
 
     }
 

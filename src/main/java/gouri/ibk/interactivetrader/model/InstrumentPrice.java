@@ -11,6 +11,7 @@ import java.sql.Date;
 public class InstrumentPrice {
     private Integer priceKey;
     private Date reportDate;
+    private String ticker;
     private BigDecimal bidPrice;
     private BigDecimal askPrice;
     private BigDecimal midPrice;
@@ -35,6 +36,16 @@ public class InstrumentPrice {
 
     public InstrumentPrice setReportDate(Date reportDate) {
         this.reportDate = reportDate;
+        return this;
+    }
+
+    @Column(name = "Ticker")
+    public String getTicker() {
+        return ticker;
+    }
+
+    public InstrumentPrice setTicker(String ticker) {
+        this.ticker = ticker;
         return this;
     }
 
