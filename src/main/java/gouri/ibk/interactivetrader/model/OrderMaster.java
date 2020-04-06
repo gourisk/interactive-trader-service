@@ -15,7 +15,7 @@ public class OrderMaster {
     private BigDecimal marketValue;
     private String tradeSource;
     private Timestamp executedTime;
-    private InstrumentMaster instrumentMasterByTicker;
+    private InstrumentMaster instrument;
     private Account accountByTraderId;
 
     @Id
@@ -154,12 +154,12 @@ public class OrderMaster {
 
     @ManyToOne
     @JoinColumn(name = "Ticker", referencedColumnName = "Ticker", nullable = false)
-    public InstrumentMaster getInstrumentMasterByTicker() {
-        return instrumentMasterByTicker;
+    public InstrumentMaster getInstrument() {
+        return instrument;
     }
 
-    public OrderMaster setInstrumentMasterByTicker(InstrumentMaster instrumentMasterByTicker) {
-        this.instrumentMasterByTicker = instrumentMasterByTicker;
+    public OrderMaster setInstrument(InstrumentMaster instrumentMasterByTicker) {
+        this.instrument = instrumentMasterByTicker;
         return this;
     }
 
