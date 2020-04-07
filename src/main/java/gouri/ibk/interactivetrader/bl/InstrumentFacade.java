@@ -5,14 +5,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Named
 public class InstrumentFacade {
@@ -21,6 +27,9 @@ public class InstrumentFacade {
 
     @Inject
     JdbcTemplate template;
+
+    @Inject
+    DataSource dataSource;
 
     public List<InstrumentPrice> getCurrentPrice(String ticker) {
         String query = "SELECT Top 1 * FROM INSTRUMENT_PRICE_HISTORY WHERE TICKER = ? ORDER BY LAST_UPDATED DESC ";
@@ -46,13 +55,18 @@ public class InstrumentFacade {
             "INNER JOIN (\n" +
             "SELECT TICKER, MAX(LAST_UPDATED) LAST_UPDATED \n" +
             "FROM INSTRUMENT_PRICE_HISTORY \n" +
+            "WHERE TICKER IN ({tickers}) \n" +
             "GROUP BY TICKER \n" +
             ") p2 ON  p1.TICKER = p2.TICKER AND p1.LAST_UPDATED =p2.LAST_UPDATED";
 
-        return template.query(query, new RowMapper<InstrumentPrice>() {
+        String tickersWithQuote = getQuotedParam(tickers);
+        String runTimeQuery = query.replace("{tickers}", tickersWithQuote);
+        logger.info("query = {}", runTimeQuery);
+
+        return template.query(runTimeQuery, new RowMapper<InstrumentPrice>() {
             @Override
             public InstrumentPrice mapRow(ResultSet rs, int rowNum) throws SQLException {
-                logger.info("resultset: {}", rs);
+                logger.info("result set: {}", rs);
                 InstrumentPrice price = new InstrumentPrice()
                     .setTicker(rs.getString("TICKER"))
                     .setReportDate(rs.getDate("REPORT_DATE"))
@@ -62,6 +76,14 @@ public class InstrumentFacade {
                 return price;
             }
         });
+    }
+
+    private String getQuotedParam(String[] tickers) {
+        String tickersWithQuote = Arrays.stream(tickers)
+            .map(el -> "'" + el + "'")
+            .collect(Collectors.joining(","));
+        logger.info("tickers with Quote: {}", tickersWithQuote);
+        return tickersWithQuote;
     }
 
     public Object[] publishPrice(String ticker) {

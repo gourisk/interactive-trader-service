@@ -1,17 +1,17 @@
 package gouri.ibk.interactivetrader.web;
 
+import gouri.ibk.interactivetrader.bl.OrderFacade;
 import gouri.ibk.interactivetrader.model.OrderMaster;
 import gouri.ibk.interactivetrader.repo.OrderMasterRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -22,6 +22,9 @@ public class OrderController {
 
     @Inject
     private OrderMasterRepo orderRepo;
+
+    @Inject
+    OrderFacade orderFacade;
 
     @GetMapping("/orders/{id}")
     public List<Map<String, Object>> getOrdersByAccount(@NotNull @PathVariable("id") int accountId) {
@@ -49,8 +52,19 @@ public class OrderController {
     public Map<String, Integer> getOrderCount(@NotNull @PathVariable("id") int accountId) {
         logger.info("find today's trade count for: {}", accountId);
         Map<String, Integer> model = new HashMap<>();
-        model.put("result", orderRepo.countByTradeDateAndAccountByTraderId_AccountId(new Date(), accountId));
+        model.put("result", orderRepo.countByTradeDateAndAccountByTraderId_AccountId(
+            new Date(new java.util.Date().getTime()), accountId));
         return model;
+    }
+
+    @PostMapping(value = "/orders/create",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public OrderMaster createOrder(@RequestBody OrderMaster inputOrder) {
+        logger.info("input order received as : {}", inputOrder);
+        OrderMaster savedOrder = orderFacade.createOrder(inputOrder);
+        return savedOrder;
     }
 
 }

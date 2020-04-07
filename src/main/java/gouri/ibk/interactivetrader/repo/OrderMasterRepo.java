@@ -4,7 +4,7 @@ import gouri.ibk.interactivetrader.model.OrderMaster;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public interface OrderMasterRepo extends JpaRepository<OrderMaster, Integer> {

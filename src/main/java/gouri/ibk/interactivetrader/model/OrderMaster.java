@@ -3,23 +3,26 @@ package gouri.ibk.interactivetrader.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.StringJoiner;
 
 @Entity
 public class OrderMaster {
     private Integer orderId;
     private String orderDesc;
-    private Timestamp tradeDate;
+    private java.sql.Date tradeDate;
     private String buySellFlag;
     private Integer quantity;
     private BigDecimal price;
     private BigDecimal marketValue;
     private String tradeSource;
-    private Timestamp executedTime;
-    private InstrumentMaster instrument;
-    private Account accountByTraderId;
+    private Timestamp executedTime = new Timestamp(new Date().getTime());
+    private InstrumentMaster instrument = new InstrumentMaster();
+    private Account accountByTraderId = new Account();
 
     @Id
     @Column(name = "OrderId")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getOrderId() {
         return orderId;
     }
@@ -42,11 +45,11 @@ public class OrderMaster {
 
     @Basic
     @Column(name = "TradeDate")
-    public Timestamp getTradeDate() {
+    public java.sql.Date getTradeDate() {
         return tradeDate;
     }
 
-    public OrderMaster setTradeDate(Timestamp tradeDate) {
+    public OrderMaster setTradeDate(java.sql.Date tradeDate) {
         this.tradeDate = tradeDate;
         return this;
     }
@@ -172,5 +175,22 @@ public class OrderMaster {
     public OrderMaster setAccountByTraderId(Account accountByTraderId) {
         this.accountByTraderId = accountByTraderId;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", OrderMaster.class.getSimpleName() + "[", "]")
+            .add("orderId=" + orderId)
+            .add("orderDesc='" + orderDesc + "'")
+            .add("tradeDate=" + tradeDate)
+            .add("buySellFlag='" + buySellFlag + "'")
+            .add("quantity=" + quantity)
+            .add("price=" + price)
+            .add("marketValue=" + marketValue)
+            .add("tradeSource='" + tradeSource + "'")
+            .add("executedTime=" + executedTime)
+            .add("instrument=" + instrument)
+            .add("accountByTraderId=" + accountByTraderId)
+            .toString();
     }
 }
