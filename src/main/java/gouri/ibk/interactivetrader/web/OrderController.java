@@ -37,19 +37,26 @@ public class OrderController {
             Sort.by(Sort.Direction.DESC, "orderId"));
 
         List<Map<String, Object>> returnOrders = new ArrayList<>();
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+
         for(OrderMaster order: orders) {
-            Map<String, Object> orderMap = new HashMap<>();
-            orderMap.put("orderId", order.getOrderId());
-            orderMap.put("ticker", order.getInstrument().getTicker());
-            orderMap.put("quantity", order.getQuantity());
-            orderMap.put("marketValue", order.getMarketValue());
-            orderMap.put("price", order.getPrice());
-            orderMap.put("tradeDate", formatter.format(order.getTradeDate()));
-            orderMap.put("executedTime", formatter.format(order.getExecutedTime()));
+            Map<String, Object> orderMap = formatOrder(order);
             returnOrders.add(orderMap);
         }
         return returnOrders;
+    }
+
+    private Map<String, Object> formatOrder(OrderMaster order) {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        Map<String, Object> orderMap = new HashMap<>();
+        orderMap.put("orderId", order.getOrderId());
+        orderMap.put("ticker", order.getInstrument().getTicker());
+        orderMap.put("quantity", order.getQuantity());
+        orderMap.put("marketValue", order.getMarketValue());
+        orderMap.put("price", order.getPrice());
+        orderMap.put("tradeDate", formatter.format(order.getTradeDate()));
+        orderMap.put("executedTime", formatter.format(order.getExecutedTime()));
+
+        return orderMap;
     }
 
     @GetMapping("/orders/count/{id}")
@@ -68,7 +75,7 @@ public class OrderController {
     public OrderMaster createOrder(@RequestBody OrderMaster inputOrder) {
         logger.info("input order received as : {}", inputOrder);
         OrderMaster savedOrder = orderFacade.createOrder(inputOrder);
-        simpMessagingTemplate.convertAndSend("/topics/trades", savedOrder);
+        simpMessagingTemplate.convertAndSend("/topics/trades", formatOrder(savedOrder));
         return savedOrder;
     }
 
