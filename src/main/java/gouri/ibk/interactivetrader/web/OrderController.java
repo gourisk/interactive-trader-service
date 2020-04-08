@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -26,11 +28,14 @@ public class OrderController {
     @Inject
     OrderFacade orderFacade;
 
+    @Inject
+    SimpMessagingTemplate simpMessagingTemplate;
+
     @GetMapping("/orders/{id}")
     public List<Map<String, Object>> getOrdersByAccount(@NotNull @PathVariable("id") int accountId) {
         logger.info("Find orders for account: {}", accountId);
         List<OrderMaster> orders = orderRepo.findTop5ByAccountByTraderId_AccountId(accountId,
-            Sort.by(Sort.Direction.DESC, "tradeDate"));
+            Sort.by(Sort.Direction.DESC, "orderId"));
 
         List<Map<String, Object>> returnOrders = new ArrayList<>();
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -64,6 +69,7 @@ public class OrderController {
     public OrderMaster createOrder(@RequestBody OrderMaster inputOrder) {
         logger.info("input order received as : {}", inputOrder);
         OrderMaster savedOrder = orderFacade.createOrder(inputOrder);
+        simpMessagingTemplate.convertAndSend("/topics/trades", savedOrder);
         return savedOrder;
     }
 

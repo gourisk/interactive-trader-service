@@ -6,6 +6,7 @@ import gouri.ibk.interactivetrader.model.InstrumentPrice;
 import gouri.ibk.interactivetrader.repo.InstrumentRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -25,6 +26,9 @@ public class InstrumentController {
     @Inject
     InstrumentRepo instrumentRepo;
 
+    @Inject
+    SimpMessagingTemplate messageTemplate;
+
 
     /**
      * this method get the list of the tickers  and provides the current price of each of the ticker
@@ -42,10 +46,11 @@ public class InstrumentController {
     }
 
     @PostMapping(value = "/publish_price")
-    public Object[] publishPrice(@RequestBody InstrumentPrice instPrice) {
+    public InstrumentPrice publishPrice(@RequestBody InstrumentPrice instPrice) {
         logger.info("Price update requested for: {}", instPrice);
 
-        Object[] newPrice = instrumentFacade.publishPrice(instPrice.getTicker());
+        InstrumentPrice newPrice = instrumentFacade.publishPrice(instPrice.getTicker());
+        messageTemplate.convertAndSend("/topics/instruments", newPrice);
         return newPrice;
     }
 
