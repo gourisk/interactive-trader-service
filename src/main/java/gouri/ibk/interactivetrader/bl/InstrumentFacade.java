@@ -86,7 +86,7 @@ public class InstrumentFacade {
         return tickersWithQuote;
     }
 
-    public Object[] publishPrice(String ticker) {
+    public InstrumentPrice publishPrice(String ticker) {
         List<InstrumentPrice> instrumentPrices = getCurrentPrice(ticker);
         logger.info("price found as : {}", instrumentPrices);
         InstrumentPrice instrumentPrice = instrumentPrices.size() == 0 ? null : instrumentPrices.get(0);
@@ -98,7 +98,11 @@ public class InstrumentFacade {
         String updateQuery = "INSERT INTO INSTRUMENT_PRICE_HISTORY VALUES(SYSDATE(), ?, ?, ?, ?, CURRENT_TIMESTAMP)";
         Object[] params = new Object[]{ticker, bidPrice, askPrice, midPrice};
         template.update(updateQuery, params);
-        return params;
+        return new InstrumentPrice()
+            .setTicker(ticker)
+            .setBidPrice(bidPrice)
+            .setAskPrice(askPrice)
+            .setMidPrice(midPrice);
 
     }
 

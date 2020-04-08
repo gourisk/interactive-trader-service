@@ -13,10 +13,8 @@ public class InteractiveTraderMessageBrokerConfig implements WebSocketMessageBro
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/trades");
-        registry.addEndpoint("/instruments");
-        registry.addEndpoint("/trades").withSockJS();
-        registry.addEndpoint("/instruments").withSockJS();
+        registry.addEndpoint("/ibk-ws");
+        registry.addEndpoint("/ibk-ws").setAllowedOrigins("*").withSockJS();
     }
 
     @Override
