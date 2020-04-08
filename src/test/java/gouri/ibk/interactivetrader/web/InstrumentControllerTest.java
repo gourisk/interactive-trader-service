@@ -1,39 +1,33 @@
 package gouri.ibk.interactivetrader.web;
 
-import gouri.ibk.interactivetrader.InteractiveTraderServiceApplication;
+import gouri.ibk.interactivetrader.InteractiveTraderServiceTestConfig;
 import gouri.ibk.interactivetrader.bl.InstrumentFacade;
 import gouri.ibk.interactivetrader.model.InstrumentMaster;
 import gouri.ibk.interactivetrader.model.InstrumentPrice;
 import gouri.ibk.interactivetrader.repo.InstrumentRepo;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader= AnnotationConfigContextLoader.class)
-@ComponentScan("gouri.ibk.interactivetrader")
 @SpringBootTest
+@ContextConfiguration(classes = {InteractiveTraderServiceTestConfig.class})
 class InstrumentControllerTest {
 
     @Autowired
@@ -44,6 +38,9 @@ class InstrumentControllerTest {
 
     @Mock
     InstrumentFacade instrumentFacade;
+
+    @Mock
+    SimpMessagingTemplate messagingTemplate;
 
     @Mock
     InstrumentRepo instrumentRepo;
@@ -61,7 +58,8 @@ class InstrumentControllerTest {
 
     @Test
     void publishPrice() {
-        Mockito.when(instrumentFacade.publishPrice(Mockito.any())).thenReturn(new Object[]{});
+        Mockito.when(instrumentFacade.publishPrice(Mockito.any())).thenReturn(new InstrumentPrice());
+        Mockito.doNothing().when(messagingTemplate).convertAndSend(Mockito.any());
         assertNotNull(instrumentController.publishPrice(new InstrumentPrice()));
     }
 

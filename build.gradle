@@ -21,9 +21,7 @@ dependencies {
     compile 'javax.inject:javax.inject:1'
     compile 'com.h2database:h2'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
 test {
