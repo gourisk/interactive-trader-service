@@ -2,6 +2,8 @@ package gouri.ibk.interactivetrader.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Account {
@@ -14,6 +16,7 @@ public class Account {
     private Timestamp createDate;
     private Timestamp modifiedDate;
     private Boolean isActive;
+    private List<AccountBalance> accountBalances = new ArrayList<>();
 
     @Id
     @Column(name = "AccountId")
@@ -100,6 +103,16 @@ public class Account {
 
     public Account setActive(Boolean active) {
         isActive = active;
+        return this;
+    }
+
+    @OneToMany(mappedBy = "account")
+    public List<AccountBalance> getAccountBalances() {
+        return accountBalances;
+    }
+
+    public Account setAccountBalances(List<AccountBalance> accountBalances) {
+        this.accountBalances = accountBalances;
         return this;
     }
 

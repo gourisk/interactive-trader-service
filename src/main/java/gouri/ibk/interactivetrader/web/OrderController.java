@@ -2,6 +2,7 @@ package gouri.ibk.interactivetrader.web;
 
 import gouri.ibk.interactivetrader.bl.OrderFacade;
 import gouri.ibk.interactivetrader.model.OrderMaster;
+import gouri.ibk.interactivetrader.model.WebOpsResult;
 import gouri.ibk.interactivetrader.repo.OrderMasterRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,10 @@ import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin({"http://localhost:3000", "http://localhost:5000"})
@@ -38,7 +42,7 @@ public class OrderController {
 
         List<Map<String, Object>> returnOrders = new ArrayList<>();
 
-        for(OrderMaster order: orders) {
+        for (OrderMaster order : orders) {
             Map<String, Object> orderMap = formatOrder(order);
             returnOrders.add(orderMap);
         }
@@ -77,6 +81,36 @@ public class OrderController {
         OrderMaster savedOrder = orderFacade.createOrder(inputOrder);
         simpMessagingTemplate.convertAndSend("/topics/trades", formatOrder(savedOrder));
         return savedOrder;
+    }
+
+    @PostMapping(value = "/orders/new",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebOpsResult<OrderMaster> createNewOrder(@RequestBody OrderMaster inputOrder) {
+        logger.info("input order received as : {}", inputOrder);
+        WebOpsResult<OrderMaster> result = orderFacade.createNewOrder(inputOrder);
+        if (result.isSuccess()) {
+            result.getData()
+                .ifPresent(order -> simpMessagingTemplate.convertAndSend("/topics/trades", formatOrder(order)));
+
+        }
+        return result;
+    }
+
+    @PostMapping(value = "/orders/cancel",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebOpsResult<OrderMaster> cancelOrder(@RequestBody OrderMaster inputOrder) {
+        logger.info("input order received as : {}", inputOrder);
+        WebOpsResult<OrderMaster> result = orderFacade.cancelOrder(inputOrder);
+        if (result.isSuccess()) {
+            result.getData()
+                .ifPresent(order -> simpMessagingTemplate.convertAndSend("/topics/trades", formatOrder(order)));
+
+        }
+        return result;
     }
 
 }

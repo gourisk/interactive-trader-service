@@ -1,6 +1,8 @@
 package gouri.ibk.interactivetrader.web;
 
+import gouri.ibk.interactivetrader.bl.AccountFacade;
 import gouri.ibk.interactivetrader.model.Account;
+import gouri.ibk.interactivetrader.model.WebOpsResult;
 import gouri.ibk.interactivetrader.repo.AccountRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,9 @@ public class AccountController {
     @Inject
     private AccountRepo repo;
 
+    @Inject
+    private AccountFacade accountFacade;
+
     @GetMapping("/account/{id}")
     public Account findById(@NotNull @PathVariable("id") int id) {
         logger.info("account controller called with {}", id);
@@ -33,9 +38,9 @@ public class AccountController {
     }
 
     @GetMapping("/account/lname/{name}")
-    public List<Account> findByLastName(@NotNull @PathVariable("name") String name) {
+    public WebOpsResult<List<Account>> findByLastName(@NotNull @PathVariable("name") String name) {
         logger.info("/account/lname/ controller called with {}", name);
-        return repo.findByLastName(name);
+        return accountFacade.getAccountByLastName(name);
     }
 
     @GetMapping("/acctsummary")

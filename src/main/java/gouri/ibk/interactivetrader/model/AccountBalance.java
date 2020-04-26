@@ -1,13 +1,30 @@
 package gouri.ibk.interactivetrader.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Objects;
 
-//@Entity
+@Entity
 public class AccountBalance {
+    private Integer id;
     private String currencyCode;
     private BigDecimal cashBalance;
-    private Integer accountId;
+    private BigDecimal minBalance;
+
+    private Account account = new Account();
+
+    @Id
+    @Column(name = "Id")
+    public Integer getId() {
+        return id;
+    }
+
+    public AccountBalance setId(Integer id) {
+        this.id = id;
+        return this;
+    }
 
     @Basic
     @Column(name = "CurrencyCode")
@@ -31,13 +48,40 @@ public class AccountBalance {
         return this;
     }
 
-    @Column(name = "AccountId")
-    public Integer getAccountId() {
-        return accountId;
+    @Basic
+    @Column(name = "MinBalance")
+    public BigDecimal getMinBalance() {
+        return minBalance;
     }
 
-    public AccountBalance setAccountId(Integer accountId) {
-        this.accountId = accountId;
+    public AccountBalance setMinBalance(BigDecimal minBalance) {
+        this.minBalance = minBalance;
         return this;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "AccountId", nullable = false)
+    @JsonIgnore
+    public Account getAccount() {
+        return account;
+    }
+
+    public AccountBalance setAccount(Account account) {
+        this.account = account;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountBalance that = (AccountBalance) o;
+        return currencyCode.equals(that.currencyCode) &&
+            account.equals(that.account);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currencyCode, account);
     }
 }

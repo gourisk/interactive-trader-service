@@ -29,9 +29,11 @@ CREATE TABLE Instrument_Master (
 
 
 CREATE TABLE Account_Balance(
+    id              INTEGER PRIMARY KEY AUTO_INCREMENT,
     Account_Id       INTEGER NOT NULL,
     Currency_Code    VARCHAR(8) NOT NULL,
     Cash_Balance     NUMERIC(32, 8) DEFAULT 0.0,
+    Min_Balance     NUMERIC(32, 8) DEFAULT 0.0,
     CONSTRAINT fk_AccountBalance_AccountId FOREIGN KEY (Account_Id)  REFERENCES Account(Account_Id)
 );
 

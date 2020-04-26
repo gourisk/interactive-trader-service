@@ -1,13 +1,12 @@
 package gouri.ibk.interactivetrader.bl;
 
+import gouri.ibk.interactivetrader.model.InstrumentMaster;
 import gouri.ibk.interactivetrader.model.InstrumentPrice;
+import gouri.ibk.interactivetrader.repo.InstrumentRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -30,6 +30,13 @@ public class InstrumentFacade {
 
     @Inject
     DataSource dataSource;
+
+    @Inject
+    InstrumentRepo instrumentRepo;
+
+    public Optional<InstrumentMaster> getValidTicker(String ticker) {
+        return instrumentRepo.findById(ticker);
+    }
 
     public List<InstrumentPrice> getCurrentPrice(String ticker) {
         String query = "SELECT Top 1 * FROM INSTRUMENT_PRICE_HISTORY WHERE TICKER = ? ORDER BY LAST_UPDATED DESC ";

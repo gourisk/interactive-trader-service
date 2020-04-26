@@ -19,6 +19,8 @@ public class OrderMaster {
     private Timestamp executedTime = new Timestamp(new Date().getTime());
     private InstrumentMaster instrument = new InstrumentMaster();
     private Account accountByTraderId = new Account();
+    private String status;
+    private String currency = "USD";
 
     @Id
     @Column(name = "OrderId")
@@ -117,6 +119,27 @@ public class OrderMaster {
 
     public OrderMaster setExecutedTime(Timestamp executedTime) {
         this.executedTime = executedTime;
+        return this;
+    }
+
+    @Basic
+    @Column(name = "Status")
+    public String getStatus() {
+        return status;
+    }
+
+    public OrderMaster setStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
+    @Transient
+    public String getCurrency() {
+        return currency;
+    }
+
+    public OrderMaster setCurrency(String currency) {
+        this.currency = currency;
         return this;
     }
 

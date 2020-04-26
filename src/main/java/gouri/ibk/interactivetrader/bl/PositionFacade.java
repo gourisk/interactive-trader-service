@@ -25,5 +25,4 @@ public class PositionFacade {
             .orElse(new BigDecimal(0.0));
     }
 
-
 }
