@@ -175,12 +175,12 @@ public class AccountSummaryFacade {
      */
     private BigDecimal getDailyPLForAccount(Account account, Date date, List<OrderMaster> orders) {
 
-        String[] tickers = orders.stream()
+        Set<String> tickers = orders.stream()
             .map(OrderMaster::getInstrument)
             .map(InstrumentMaster::getTicker)
-            .toArray(String[]::new);
-        logger.info("going to fetch current price details for tickers: {}", Arrays.toString(tickers));
-        Map<String, InstrumentPrice> latestPrices = instFacade.getCurrentPriceMulti(tickers)
+            .collect(Collectors.toSet());
+        logger.info("going to fetch current price details for tickers: {}", tickers);
+        Map<String, InstrumentPrice> latestPrices = instFacade.getCurrentPriceMulti(tickers.toArray(new String[0]))
             .stream()
             .collect(Collectors.toMap(InstrumentPrice::getTicker, Function.identity()));
         return orders.stream()

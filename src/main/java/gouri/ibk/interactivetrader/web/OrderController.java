@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin({"http://localhost:3000", "http://localhost:5000"})
@@ -70,19 +66,26 @@ public class OrderController {
         return orderFacade.getTodaysOrderCountForAccount(accountId);
     }
 
+    /**
+     * Not used Anymore
+     * use {@link #createNewOrder(OrderMaster)} instead
+     *
+     * @param inputOrder
+     * @return
+     */
+    @Deprecated
     @PostMapping(value = "/orders/create",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public OrderMaster createOrder(@RequestBody OrderMaster inputOrder) {
         logger.info("input order received as : {}", inputOrder);
-        OrderMaster savedOrder = orderFacade.createOrder(inputOrder);
-        simpMessagingTemplate.convertAndSend("/topics/trades", formatOrder(savedOrder));
-        return savedOrder;
+        // OrderMaster savedOrder = orderFacade.createOrder(inputOrder);
+        // simpMessagingTemplate.convertAndSend("/topics/trades", formatOrder(savedOrder));
+        return null;
     }
 
     /**
-     *
      * @param inputOrder
      * @return
      */
@@ -94,9 +97,7 @@ public class OrderController {
         logger.info("input order received as : {}", inputOrder);
         WebOpsResult<OrderMaster> result = orderFacade.createNewOrder(inputOrder);
         if (result.isSuccess()) {
-            result.getData()
-                .ifPresent(order -> simpMessagingTemplate.convertAndSend("/topics/trades", formatOrder(order)));
-
+            publishOrder(result.getData());
         }
         return result;
     }
@@ -109,11 +110,27 @@ public class OrderController {
         logger.info("input order received as : {}", inputOrder);
         WebOpsResult<OrderMaster> result = orderFacade.cancelOrder(inputOrder);
         if (result.isSuccess()) {
-            result.getData()
-                .ifPresent(order -> simpMessagingTemplate.convertAndSend("/topics/trades", formatOrder(order)));
-
+            publishOrder(result.getData());
         }
         return result;
+    }
+
+    @PostMapping(value = "/orders/undocancel",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebOpsResult<OrderMaster> undoCancellation(@RequestBody OrderMaster inputOrder) {
+        logger.info("order received to undo cancel : {}", inputOrder);
+        WebOpsResult<OrderMaster> result = orderFacade.undoCancellation(inputOrder);
+        if (result.isSuccess()) {
+            publishOrder(result.getData());
+        }
+        return result;
+    }
+
+    private void publishOrder(Optional<OrderMaster> optionalOrder) {
+        optionalOrder.ifPresent(order ->
+            simpMessagingTemplate.convertAndSend("/topics/trades", formatOrder(order)));
     }
 
 }

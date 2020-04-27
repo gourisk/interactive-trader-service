@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static gouri.ibk.interactivetrader.model.WebOpsResult.failureOf;
+import static gouri.ibk.interactivetrader.model.WebOpsResult.successOf;
+
 @Named
 @Scope("prototype")
 public class OrderFacade {
@@ -44,11 +47,11 @@ public class OrderFacade {
     }
 
     /**
-     * Not used anymore. 
-     * @see #createNewOrder instead
+     * Not used anymore.
      *
      * @param transientOrder
      * @return
+     * @see #createNewOrder instead
      */
     @Deprecated
     public OrderMaster createOrder(OrderMaster transientOrder) {
@@ -120,12 +123,11 @@ public class OrderFacade {
 
     /**
      * creates a new order and saves to database.
-     * @see #validateOrder(OrderMaster) for order validation feature.
-     * @see {@link AccountFacade} for Account related update for new order creation
      *
      * @param transientOrder the order input
-     * 
      * @return {@link WebOpsResult} wrapped with persisted Order or errors in case of failure.
+     * @see #validateOrder(OrderMaster) for order validation feature.
+     * @see {@link AccountFacade} for Account related update for new order creation
      */
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public WebOpsResult<OrderMaster> createNewOrder(OrderMaster transientOrder) {
@@ -135,7 +137,7 @@ public class OrderFacade {
 
         Map<String, String> errors = this.validateOrder(transientOrder);
         if (!errors.isEmpty())
-            return WebOpsResult.failureOf(errors);
+            return failureOf(errors);
         else {
             logger.info("order validation successful, {}", transientOrder);
             try {
@@ -146,10 +148,8 @@ public class OrderFacade {
                 accountFacade.updateAccountBalance(savedOrder.getAccountByTraderId(), savedOrder.getCurrency(), balDelta);
 
                 return WebOpsResult.successOf(savedOrder);
-            }
-            catch (Exception e) {
-                errors.put("runTimeError", e.getMessage());
-                return WebOpsResult.failureOf(errors);
+            } catch (Exception e) {
+                return failureOf("runTimeError", e.getMessage());
             }
         }
     }
@@ -175,7 +175,7 @@ public class OrderFacade {
         logger.info("order in DB = {}", persistentOrder);
         Map<String, String> errors = this.validateOrderForCancel(persistentOrder);
         if (!errors.isEmpty())
-            return WebOpsResult.failureOf(errors);
+            return failureOf(errors);
         else {
             logger.info("order validation successful, {}", persistentOrder);
             try {
@@ -191,10 +191,20 @@ public class OrderFacade {
                 return WebOpsResult.successOf(cancelledOrder);
             } catch (Exception e) {
                 e.printStackTrace();
-                errors.put("runTimeError", e.getMessage());
-                return WebOpsResult.failureOf(errors);
+                return failureOf("runTimeError", e.getMessage());
             }
         }
+    }
+
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public WebOpsResult<OrderMaster> undoCancellation(OrderMaster transientOrder) {
+        Optional<OrderMaster> persistentOrder = orderRepo.findById(transientOrder.getOrderId());
+        logger.info("order in DB = {}", persistentOrder);
+        return persistentOrder
+            .filter(order -> "CANCELLED".equalsIgnoreCase(order.getStatus()))
+            .map(order -> orderRepo.save(order.setStatus("OPEN")))
+            .map(WebOpsResult::successOf)
+            .orElse(failureOf("order.invalidId", "Invalid Order Id " + transientOrder.getOrderId()));
     }
 
     public WebOpsResult<Integer> getTodaysOrderCountForAccount(int accountId) {

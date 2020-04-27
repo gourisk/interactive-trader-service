@@ -115,7 +115,8 @@ public final class WebOpsResult<T> {
      * @return @{@link WebOpsResult} with wrapped error
      */
     public static <R> WebOpsResult<R> failureOf(@NotNull Map<String, String> errorMap) {
-        return new WebOpsResult<>(false, null, errorMap);
+        R r = null;
+        return new WebOpsResult<>(false, r, errorMap);
     }
 
     /**
@@ -128,6 +129,7 @@ public final class WebOpsResult<T> {
     public static <R> WebOpsResult<R> failureOf(@NotNull String errorKey, String errorDesc) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put(errorKey, errorDesc);
-        return new WebOpsResult<>(false, null, errorMap);
+        R r = null;
+        return new WebOpsResult<>(false, r, errorMap);
     }
 }
