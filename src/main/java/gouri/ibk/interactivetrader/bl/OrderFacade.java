@@ -44,9 +44,13 @@ public class OrderFacade {
     }
 
     /**
+     * Not used anymore. 
+     * @see #createNewOrder instead
+     *
      * @param transientOrder
      * @return
      */
+    @Deprecated
     public OrderMaster createOrder(OrderMaster transientOrder) {
         OrderMaster savedOrder = transientOrder;
         String ticker = transientOrder.getInstrument().getTicker();
@@ -64,8 +68,10 @@ public class OrderFacade {
     }
 
     /**
-     * @param order
-     * @return
+     * Validator method for Order Attributes
+     *
+     * @param order input {@link OrderMaster} object
+     * @return Errors as a Map, empty otherwise
      */
     public Map<String, String> validateOrder(OrderMaster order) {
         logger.info("validation requested for Order: {}", order);
@@ -113,8 +119,13 @@ public class OrderFacade {
     }
 
     /**
-     * @param transientOrder
-     * @return
+     * creates a new order and saves to database.
+     * @see #validateOrder(OrderMaster) for order validation feature.
+     * @see {@link AccountFacade} for Account related update for new order creation
+     *
+     * @param transientOrder the order input
+     * 
+     * @return {@link WebOpsResult} wrapped with persisted Order or errors in case of failure.
      */
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public WebOpsResult<OrderMaster> createNewOrder(OrderMaster transientOrder) {
