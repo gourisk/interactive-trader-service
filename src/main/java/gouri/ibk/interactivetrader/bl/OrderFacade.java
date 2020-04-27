@@ -202,7 +202,14 @@ public class OrderFacade {
         logger.info("order in DB = {}", persistentOrder);
         return persistentOrder
             .filter(order -> "CANCELLED".equalsIgnoreCase(order.getStatus()))
-            .map(order -> orderRepo.save(order.setStatus("OPEN")))
+            .map(order -> {
+                BigDecimal marketValue = order.getMarketValue();
+                BigDecimal balDelta =
+                    "B".equalsIgnoreCase(order.getBuySellFlag()) ? marketValue.multiply(BigDecimal.valueOf(-1)) : marketValue;
+                OrderMaster savedOrder = orderRepo.save(order.setStatus("OPEN"));
+                accountFacade.updateAccountBalance(savedOrder.getAccountByTraderId(), savedOrder.getCurrency(), balDelta);
+                return savedOrder;
+            })
             .map(WebOpsResult::successOf)
             .orElse(failureOf("order.invalidId", "Invalid Order Id " + transientOrder.getOrderId()));
     }
