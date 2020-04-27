@@ -55,7 +55,6 @@ Technologies Used are as Below.
 | Server Side | Spring Boot | Spring REST, spring web socket, |
 | Language | Java | 11 |
 | Persistence | Spring Data JPA |
- |
 | Database | H2 | A simple db file has been created and uploaded to repository. Test data already created |
 | Front End | ReactJS | React JS/Node JS based web UI. |
 | Build Tool | Gradle | Java Project |
