@@ -1,21 +1,20 @@
 package gouri.ibk.interactivetrader.model;
 
-import javax.persistence.*;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-//@Entity
+
 public class InstrumentPriceHistory {
     private Date reportDate;
     private BigDecimal bidPrice;
     private BigDecimal askPrice;
     private BigDecimal midPrice;
     private Timestamp lastUpdated;
-    private InstrumentMaster instrumentMasterByTicker;
+    private String ticker;
 
-    @Basic
-    @Column(name = "ReportDate")
     public Date getReportDate() {
         return reportDate;
     }
@@ -25,8 +24,6 @@ public class InstrumentPriceHistory {
         return this;
     }
 
-    @Basic
-    @Column(name = "BidPrice")
     public BigDecimal getBidPrice() {
         return bidPrice;
     }
@@ -36,8 +33,6 @@ public class InstrumentPriceHistory {
         return this;
     }
 
-    @Basic
-    @Column(name = "AskPrice")
     public BigDecimal getAskPrice() {
         return askPrice;
     }
@@ -47,8 +42,6 @@ public class InstrumentPriceHistory {
         return this;
     }
 
-    @Basic
-    @Column(name = "MidPrice")
     public BigDecimal getMidPrice() {
         return midPrice;
     }
@@ -58,14 +51,21 @@ public class InstrumentPriceHistory {
         return this;
     }
 
-    @Basic
-    @Column(name = "LastUpdated")
     public Timestamp getLastUpdated() {
         return lastUpdated;
     }
 
     public InstrumentPriceHistory setLastUpdated(Timestamp lastUpdated) {
         this.lastUpdated = lastUpdated;
+        return this;
+    }
+
+    public String getTicker() {
+        return ticker;
+    }
+
+    public InstrumentPriceHistory setTicker(String ticker) {
+        this.ticker = ticker;
         return this;
     }
 
@@ -95,14 +95,4 @@ public class InstrumentPriceHistory {
         return result;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "Ticker", referencedColumnName = "Ticker", nullable = false)
-    public InstrumentMaster getInstrumentMasterByTicker() {
-        return instrumentMasterByTicker;
-    }
-
-    public InstrumentPriceHistory setInstrumentMasterByTicker(InstrumentMaster instrumentMasterByTicker) {
-        this.instrumentMasterByTicker = instrumentMasterByTicker;
-        return this;
-    }
 }

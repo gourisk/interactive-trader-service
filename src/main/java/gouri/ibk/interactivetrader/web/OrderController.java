@@ -59,17 +59,15 @@ public class OrderController {
         orderMap.put("price", order.getPrice());
         orderMap.put("tradeDate", formatter.format(order.getTradeDate()));
         orderMap.put("executedTime", formatter.format(order.getExecutedTime()));
-
+        orderMap.put("status", order.getStatus());
+        orderMap.put("buySellFlag", order.getBuySellFlag());
         return orderMap;
     }
 
     @GetMapping("/orders/count/{id}")
-    public Map<String, Integer> getOrderCount(@NotNull @PathVariable("id") int accountId) {
+    public WebOpsResult<Integer> getOrderCount(@NotNull @PathVariable("id") int accountId) {
         logger.info("find today's trade count for: {}", accountId);
-        Map<String, Integer> model = new HashMap<>();
-        model.put("result", orderRepo.countByTradeDateAndAccountByTraderId_AccountId(
-            new Date(new java.util.Date().getTime()), accountId));
-        return model;
+        return orderFacade.getTodaysOrderCountForAccount(accountId);
     }
 
     @PostMapping(value = "/orders/create",
@@ -83,6 +81,11 @@ public class OrderController {
         return savedOrder;
     }
 
+    /**
+     *
+     * @param inputOrder
+     * @return
+     */
     @PostMapping(value = "/orders/new",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE

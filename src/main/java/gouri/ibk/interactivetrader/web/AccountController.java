@@ -1,6 +1,7 @@
 package gouri.ibk.interactivetrader.web;
 
 import gouri.ibk.interactivetrader.bl.AccountFacade;
+import gouri.ibk.interactivetrader.bl.AccountSummaryFacade;
 import gouri.ibk.interactivetrader.model.Account;
 import gouri.ibk.interactivetrader.model.WebOpsResult;
 import gouri.ibk.interactivetrader.repo.AccountRepo;
@@ -14,10 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @RestController
 @CrossOrigin({"http://localhost:3000", "http://localhost:5000"})
@@ -31,6 +29,9 @@ public class AccountController {
     @Inject
     private AccountFacade accountFacade;
 
+    @Inject
+    private AccountSummaryFacade accountSummaryFacade;
+
     @GetMapping("/account/{id}")
     public Account findById(@NotNull @PathVariable("id") int id) {
         logger.info("account controller called with {}", id);
@@ -43,13 +44,12 @@ public class AccountController {
         return accountFacade.getAccountByLastName(name);
     }
 
-    @GetMapping("/acctsummary")
-    public Map<String, ? extends Object> getSummary() {
-        Map<String, Integer> map = new HashMap<>();
-        logger.info("getSummary controller called.");
-        int number = new Random().nextInt(1000);
-        map.put("result", number);
-        return map;
+    @GetMapping("/acctsummary/{id}")
+    public WebOpsResult<AccountSummaryFacade.AccountSummary> getSummary(@NotNull @PathVariable("id") int id) {
+        logger.info("getSummary controller called for account. {}", id);
+        String ccy = "USD"; //TODO: Currency logic to be implemented by exchange code.
+        Date cobDate = new Date(); //TODO: pass from UI for future enhancement
+        return accountSummaryFacade.generateSummary(id, ccy, cobDate);
     }
 
 }

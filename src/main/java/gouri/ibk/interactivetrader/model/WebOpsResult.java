@@ -1,6 +1,7 @@
 package gouri.ibk.interactivetrader.model;
 
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -49,6 +50,13 @@ public final class WebOpsResult<T> {
         this.errors = _errors;
     }
 
+    /**
+     * Hidden constructor.
+     * The Result is built from static param context
+     *
+     * @see @{@link #successOf(Object)}
+     * @see @{@link #failureOf(Map)}
+     */
     private WebOpsResult(boolean _success, Optional<T> _data, Map<String, String> _errors) {
         this.success = _success;
         this.data = _data;
@@ -107,6 +115,19 @@ public final class WebOpsResult<T> {
      * @return @{@link WebOpsResult} with wrapped error
      */
     public static <R> WebOpsResult<R> failureOf(@NotNull Map<String, String> errorMap) {
+        return new WebOpsResult<>(false, null, errorMap);
+    }
+
+    /**
+     * static method that builds a failure result for single failure Message
+     * @param errorKey errorKey
+     * @param errorDesc meaningful Desc or error.
+     * @param <R> Type of the result expected by client
+     * @return @{@link WebOpsResult} with wrapped error
+     */
+    public static <R> WebOpsResult<R> failureOf(@NotNull String errorKey, String errorDesc) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put(errorKey, errorDesc);
         return new WebOpsResult<>(false, null, errorMap);
     }
 }

@@ -1,7 +1,7 @@
 package gouri.ibk.interactivetrader.bl;
 
-import gouri.ibk.interactivetrader.model.TraderPositionKey;
-import gouri.ibk.interactivetrader.repo.PositionRepo;
+import gouri.ibk.interactivetrader.repo.AccountRepo;
+import gouri.ibk.interactivetrader.repo.OrderMasterRepo;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -12,17 +12,13 @@ import java.util.Date;
 public class PositionFacade {
 
     @Inject
-    PositionRepo positionRepo;
+    OrderMasterRepo orderRepo;
 
-    public BigDecimal getTraderPositionByDate(int traderId, String ticker, Date tradeDate) {
-        TraderPositionKey key = new TraderPositionKey()
-            .setAccountId(traderId)
-            .setTicker(ticker)
-            .setReportDate(new java.sql.Date(tradeDate.getTime()));
-        return positionRepo
-            .findById(key)
-            .map(t -> t.getMarketValue())
-            .orElse(new BigDecimal(0.0));
+    @Inject
+    AccountRepo accountRepo;
+
+    public BigDecimal calculateTraderPLForToday(int traderId) {
+        return null;
     }
 
 }

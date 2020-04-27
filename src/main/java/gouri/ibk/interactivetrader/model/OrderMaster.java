@@ -6,6 +6,10 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.StringJoiner;
 
+@NamedQueries({
+    @NamedQuery(name = "OrderMaster.OrdersByExecDate",
+        query = "Select o from OrderMaster o where o.executedTime >= current_date ")
+})
 @Entity
 public class OrderMaster {
     private Integer orderId;

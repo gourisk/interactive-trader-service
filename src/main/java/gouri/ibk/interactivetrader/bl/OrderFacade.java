@@ -7,7 +7,6 @@ import gouri.ibk.interactivetrader.repo.OrderMasterRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.Example;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -122,29 +121,29 @@ public class OrderFacade {
         String ticker = transientOrder.getInstrument().getTicker();
         Integer accountId = transientOrder.getAccountByTraderId().getAccountId();
         logger.info("get entities for for: ticker = {}, accountId={}", ticker, accountId);
-//        instrumentFacade
-//            .getValidTicker(ticker)
-//            .ifPresent(transientOrder::setInstrument);
-//        accountFacade
-//            .getValidAccount(accountId)
-//            .ifPresent(transientOrder::setAccountByTraderId);
+
         Map<String, String> errors = this.validateOrder(transientOrder);
         if (!errors.isEmpty())
             return WebOpsResult.failureOf(errors);
         else {
             logger.info("order validation successful, {}", transientOrder);
-            BigDecimal marketValue = transientOrder.getPrice().multiply(new BigDecimal(transientOrder.getQuantity()));
-            BigDecimal balDelta =
-                "B".equalsIgnoreCase(transientOrder.getBuySellFlag()) ? marketValue.multiply(BigDecimal.valueOf(-1)) : marketValue;
-            transientOrder.setMarketValue(marketValue);
-            OrderMaster savedOrder = orderRepo.save(transientOrder);
-            accountFacade.updateAccountBalance(savedOrder.getAccountByTraderId(), savedOrder.getCurrency(), balDelta);
+            try {
+                BigDecimal marketValue = transientOrder.getPrice().multiply(new BigDecimal(transientOrder.getQuantity()));
+                BigDecimal balDelta =
+                    "B".equalsIgnoreCase(transientOrder.getBuySellFlag()) ? marketValue.multiply(BigDecimal.valueOf(-1)) : marketValue;
+                OrderMaster savedOrder = orderRepo.save(transientOrder.setMarketValue(marketValue).setStatus("OPEN"));
+                accountFacade.updateAccountBalance(savedOrder.getAccountByTraderId(), savedOrder.getCurrency(), balDelta);
 
-            return WebOpsResult.successOf(savedOrder);
+                return WebOpsResult.successOf(savedOrder);
+            }
+            catch (Exception e) {
+                errors.put("runTimeError", e.getMessage());
+                return WebOpsResult.failureOf(errors);
+            }
         }
     }
 
-    private Map<String, String> validateOrderForCancel(Optional<OrderMaster> order) {
+    public Map<String, String> validateOrderForCancel(Optional<OrderMaster> order) {
         logger.info("validation requested for Order: {}", order);
         Map<String, String> errors = new HashMap<>();
         if (order.isEmpty()) {
@@ -168,17 +167,27 @@ public class OrderFacade {
             return WebOpsResult.failureOf(errors);
         else {
             logger.info("order validation successful, {}", persistentOrder);
-            Optional<OrderMaster> cancelledOrder = persistentOrder.map(order -> {
-                BigDecimal marketValue = order.getMarketValue();
-                BigDecimal balDelta =
-                    "S".equalsIgnoreCase(order.getBuySellFlag()) ? marketValue.multiply(BigDecimal.valueOf(-1)) : marketValue;
-                order.setStatus("CANCELLED");
-                OrderMaster savedOrder = orderRepo.save(order);
-                accountFacade.updateAccountBalance(savedOrder.getAccountByTraderId(), savedOrder.getCurrency(), balDelta);
-                return savedOrder;
-            });
-            return WebOpsResult.successOf(cancelledOrder);
+            try {
+                Optional<OrderMaster> cancelledOrder = persistentOrder.map(order -> {
+                    BigDecimal marketValue = order.getMarketValue();
+                    BigDecimal balDelta =
+                        "S".equalsIgnoreCase(order.getBuySellFlag()) ? marketValue.multiply(BigDecimal.valueOf(-1)) : marketValue;
+                    order.setStatus("CANCELLED");
+                    OrderMaster savedOrder = orderRepo.save(order);
+                    accountFacade.updateAccountBalance(savedOrder.getAccountByTraderId(), savedOrder.getCurrency(), balDelta);
+                    return savedOrder;
+                });
+                return WebOpsResult.successOf(cancelledOrder);
+            } catch (Exception e) {
+                e.printStackTrace();
+                errors.put("runTimeError", e.getMessage());
+                return WebOpsResult.failureOf(errors);
+            }
         }
+    }
+
+    public WebOpsResult<Integer> getTodaysOrderCountForAccount(int accountId) {
+        return WebOpsResult.successOf(orderRepo.getTradeCountForToday(accountId));
     }
 
 }
